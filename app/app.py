@@ -1,5 +1,20 @@
 
 from flask import Flask, jsonify, make_response, request
+import mysql.connector as mysql
+
+mydb = mysql.connect(
+  host="172.17.0.3",
+  user="root",
+  passwd="password",
+  database="test"
+)
+
+mycursor = mydb.cursor()
+
+mycursor.execute("SELECT * FROM `sample`")
+
+myresult = mycursor.fetchall()
+
 app = Flask(__name__)
 
 items = [ ]
@@ -26,7 +41,7 @@ def get_item(item_id):
 
 @app.route('/items', methods=['GET'])
 def get_items():
-    return jsonify({'items': items})
+    return jsonify({'items': myresult})
 
 @app.route('/')
 def hello_world():
