@@ -3,17 +3,11 @@ from flask import Flask, jsonify, make_response, request
 import mysql.connector as mysql
 
 mydb = mysql.connect(
-  host="172.17.0.3",
+  host="172.17.0.2",
   user="root",
   passwd="password",
   database="test"
 )
-
-mycursor = mydb.cursor()
-
-mycursor.execute("SELECT * FROM `sample`")
-
-myresult = mycursor.fetchall()
 
 app = Flask(__name__)
 
@@ -41,6 +35,11 @@ def get_item(item_id):
 
 @app.route('/items', methods=['GET'])
 def get_items():
+    mycursor = mydb.cursor()
+
+    mycursor.execute("SELECT * FROM `sample`")
+
+    myresult = mycursor.fetchall()
     return jsonify({'items': myresult})
 
 @app.route('/')
